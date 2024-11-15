@@ -3,13 +3,13 @@ import { Injectable, Logger } from '@nestjs/common';
 @Injectable()
 export class AppService {
   private logger = new Logger();
-  getHello(): string {
+  getHello() {
     this.logger.log('Hello World!');
-    return 'Hello World!';
+    return { 'Hello World!': 'Hello World!' };
   }
 
-  postHello(): string {
+  postHello() {
     this.logger.log('Hello World!');
-    return 'Hello World!';
+    return { 'Hello World!': 'Hello World!' };
   }
 }

@@ -7,6 +7,7 @@ import {
 import { randomUUID } from 'crypto';
 import { Observable } from 'rxjs';
 import * as fs from 'fs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class RequestInterceptor implements NestInterceptor {
@@ -24,9 +25,19 @@ export class RequestInterceptor implements NestInterceptor {
     const fileName = `${new Date().toISOString().split('T')[0]}.access.log`;
     const folder = 'logs';
     fs.mkdirSync(folder, { recursive: true });
+    const meta = {
+      ReqID,
+      statusCode,
+      method,
+      url,
+      ip,
+      userAgent,
+      browser,
+      date: new Date().toISOString(),
+    };
     fs.appendFile(
       `${folder}/${fileName}`,
-      `${ReqID} - ${new Date().toISOString()} - ${statusCode} - ${method} - ${url} - ${ip} - ${userAgent} - ${browser}\n`,
+      JSON.stringify(meta) + '\n',
       (err) => {
         if (err) {
           console.error(err);
@@ -35,7 +46,13 @@ export class RequestInterceptor implements NestInterceptor {
         }
       },
     );
-    return next.handle();
+
+    return next.handle().pipe(
+      map((data) => ({
+        ...data,
+        meta,
+      })),
+    );
   }
 
   DeviceType(req) {
