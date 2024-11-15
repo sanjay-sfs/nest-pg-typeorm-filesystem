@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource, typeormConfig } from './config/database.config';
 import { ConfigModule } from '@nestjs/config';
+import { FileLoggerModule } from 'services/uploader/file-uploader.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forRootAsync({
       useFactory: async () => AppDataSource.options,
     }),
+    FileLoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
