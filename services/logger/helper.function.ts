@@ -3,9 +3,6 @@ import * as fs from 'fs';
 import * as dotenv from 'dotenv';
 dotenv.config();
 export class LoggerHelper {
-  // helper
-  constructor() {}
-
   logFile(path: string, data: any): boolean {
     // logFile helper
     const TZ = process.env.TZ || 'UTC';
